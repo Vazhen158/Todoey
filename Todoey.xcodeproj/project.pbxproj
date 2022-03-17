@@ -40,6 +40,7 @@
 		C90D748927DE4CE500632369 /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
+				C9CFFD8127E1D88F0036AF14 /* DataModel.xcdatamodeld */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -89,7 +90,6 @@
 			isa = PBXGroup;
 			children = (
 				EB2BE4F9239524DB00FB933B /* AppDelegate.swift */,
-				C9CFFD8127E1D88F0036AF14 /* DataModel.xcdatamodeld */,
 				C90D748927DE4CE500632369 /* Data Model */,
 				C90D748B27DE4D4700632369 /* Views */,
 				C90D748A27DE4D2400632369 /* Controllers */,
