@@ -21,6 +21,7 @@ class ToDoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         loadItems()
     }
     
@@ -50,6 +51,9 @@ class ToDoListViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+       // context.delete(itemArray[indexPath.row]) // удаляет данные из permanent store, всегда должен быть выше remove(at:)
+       // itemArray.remove(at: indexPath.row) // удаляет текущий элемент из itemArray
+       
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
@@ -84,7 +88,7 @@ class ToDoListViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func saveItems() {
+    func saveItems() { // создание записи  в бд
         
         do {
             try context.save()
@@ -102,6 +106,17 @@ class ToDoListViewController: UITableViewController {
         } catch {
             print("Error fetching data from context \(error)")
         }
+    }
+    
+    
+    
+    
+}
+
+extension ToDoListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request: NSFetchRequest<Item> = Item.fetchRequest() // чтение из бд
+       // let predicate = NSPredicate(format: "title CONTAINS %@", <#T##args: CVarArg...##CVarArg#>)
     }
     
 }
