@@ -99,8 +99,8 @@ class ToDoListViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadItems() { // извлекаем данные сохраненные в Data Model
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
+    func loadItems(witch request: NSFetchRequest<Item> = Item.fetchRequest()) { // извлекаем данные сохраненные в Data Model
+     
         do {
             itemArray = try context.fetch(request)
         } catch {
@@ -116,7 +116,11 @@ class ToDoListViewController: UITableViewController {
 extension ToDoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request: NSFetchRequest<Item> = Item.fetchRequest() // чтение из бд
-       // let predicate = NSPredicate(format: "title CONTAINS %@", <#T##args: CVarArg...##CVarArg#>)
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+      
+        loadItems(witch: request)
     }
     
 }
