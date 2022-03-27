@@ -107,7 +107,14 @@ class ToDoListViewController: UITableViewController {
             print("Error fetching data from context \(error)")
         }
     }
-    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            context.delete(itemArray[indexPath.row]) // удаляет данные из permanent store, всегда должен быть выше remove(at:)
+             itemArray.remove(at: indexPath.row) // удаляет текущий элемент из itemArray
+            saveItems()
+            tableView.reloadData()
+        }
+    }
     
     
     
