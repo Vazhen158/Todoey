@@ -106,9 +106,10 @@ class ToDoListViewController: UITableViewController {
         } catch {
             print("Error fetching data from context \(error)")
         }
+        tableView.reloadData()
     }
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+        if editingStyle == .delete { // добавляет возможность удаления ячейки
             context.delete(itemArray[indexPath.row]) // удаляет данные из permanent store, всегда должен быть выше remove(at:)
              itemArray.remove(at: indexPath.row) // удаляет текущий элемент из itemArray
             saveItems()
@@ -128,6 +129,14 @@ extension ToDoListViewController: UISearchBarDelegate {
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
       
         loadItems(witch: request)
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
     }
     
 }
