@@ -122,6 +122,7 @@ class ToDoListViewController: UITableViewController {
 }
 
 extension ToDoListViewController: UISearchBarDelegate {
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request: NSFetchRequest<Item> = Item.fetchRequest() // чтение из бд
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
