@@ -51,9 +51,6 @@ class ToDoListViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       // context.delete(itemArray[indexPath.row]) // удаляет данные из permanent store, всегда должен быть выше remove(at:)
-       // itemArray.remove(at: indexPath.row) // удаляет текущий элемент из itemArray
-       
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
@@ -70,14 +67,11 @@ class ToDoListViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             
-            
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.done = false
-            
             self.itemArray.append(newItem)
             self.saveItems()
-            
         }
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"

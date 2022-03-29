@@ -72,6 +72,16 @@ class CategoryViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete { // добавляет возможность удаления ячейки
+            context.delete(categoryArray[indexPath.row]) // удаляет данные из permanent store, всегда должен быть выше remove(at:)
+            categoryArray.remove(at: indexPath.row) // удаляет текущий элемент из itemArray
+            saveCategories()
+            tableView.reloadData()
+        }
+    }
+    
+    
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
