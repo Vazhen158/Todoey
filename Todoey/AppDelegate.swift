@@ -21,15 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(Realm.Configuration.defaultConfiguration.fileURL) // месторасположение файла бд
         // test
         
-        let data = Data()
-        data.name = ""
-        data.age = 30
         
         do {
             let realm = try Realm()
-            try realm.write {
-                realm.add(data)
-            }
+            
             
         } catch {
             print("Error initialising new realm, \(error)")

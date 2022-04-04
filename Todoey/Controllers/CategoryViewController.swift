@@ -8,9 +8,11 @@
 
 import UIKit
 import CoreData
-
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
+    
+    let realm = try! Realm()
     
     var categoryArray = [Category]()
     
@@ -24,10 +26,12 @@ class CategoryViewController: UITableViewController {
     // MARK: - Table view data source
     
     
-    func saveCategories() { // создание записи  в бд
+    func save(category: Category) { // создание записи  в бд
         
         do {
-            try context.save()
+            try realm.write() {
+                realm.add(category)
+            }
         } catch {
             print("Error saving context \(error)")
         }
@@ -36,14 +40,14 @@ class CategoryViewController: UITableViewController {
     }
     
     
-    func loadCategories(witch request: NSFetchRequest<Category> = Category.fetchRequest()) { // извлекаем данные сохраненные в Data Model
-        
-        do {
-            categoryArray = try context.fetch(request)
-        } catch {
-            print("Error fetching data from context \(error)")
-        }
-        tableView.reloadData()
+    func loadCategories() { // извлекаем данные сохраненные в Data Model
+//        
+//        do {
+//            categoryArray = try context.fetch(request)
+//        } catch {
+//            print("Error fetching data from context \(error)")
+//        }
+//        tableView.reloadData()
     }
     
     
@@ -56,7 +60,7 @@ class CategoryViewController: UITableViewController {
         
         performSegue(withIdentifier: "goToItems", sender: self)
         
-        saveCategories()
+        //save(category: self.Category)
         
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -82,14 +86,14 @@ class CategoryViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete { // добавляет возможность удаления ячейки
-            context.delete(categoryArray[indexPath.row]) // удаляет данные из permanent store, всегда должен быть выше remove(at:)
-            categoryArray.remove(at: indexPath.row) // удаляет текущий элемент из itemArray
-            saveCategories()
-            tableView.reloadData()
-        }
-    }
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete { // добавляет возможность удаления ячейки
+//           // context.delete(categoryArray[indexPath.row]) // удаляет данные из permanent store, всегда должен быть выше remove(at:)
+//            categoryArray.remove(at: indexPath.row) // удаляет текущий элемент из itemArray
+//            save(category: <#Category#>)
+//            tableView.reloadData()
+//        }
+//    }
     
     
     
@@ -99,11 +103,11 @@ class CategoryViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
             
-            let newCategory = Category(context: self.context)
+            let newCategory = Category()
             newCategory.name = textField.text!
             
             self.categoryArray.append(newCategory)
-            self.saveCategories()
+            self.save(category: newCategory)
             
         }
         alert.addTextField { (alertTextField) in
